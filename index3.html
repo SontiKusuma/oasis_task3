@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .converter-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input[type="number"] {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select, button {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-container">
+        <h1>Temperature Converter</h1>
+        <input type="number" id="temperatureInput" placeholder="Enter temperature">
+        
+        <select id="unitInput">
+            <option value="C">Celsius</option>
+            <option value="F">Fahrenheit</option>
+            <option value="K">Kelvin</option>
+        </select>
+        
+        <button id="convertButton">Convert</button>
+        
+        <div class="result" id="resultDisplay"></div>
+    </div>
+
+    <script>
+        function convertTemperature(value, unit) {
+            let celsius, fahrenheit, kelvin;
+            
+            if (unit === "C") {
+                celsius = value;
+                fahrenheit = (value * 9/5) + 32;
+                kelvin = parseFloat(value) + 273.15;
+            } else if (unit === "F") {
+                fahrenheit = value;
+                celsius = (value - 32) * 5/9;
+                kelvin = (value - 32) * 5/9 + 273.15;
+            } else if (unit === "K") {
+                kelvin = value;
+                celsius = value - 273.15;
+                fahrenheit = (value - 273.15) * 9/5 + 32;
+            }
+
+            return { celsius, fahrenheit, kelvin };
+        }
+
+        document.getElementById('convertButton').addEventListener('click', function() {
+            const temperatureInput = document.getElementById('temperatureInput').value;
+            const unitInput = document.getElementById('unitInput').value;
+            
+            if (isNaN(temperatureInput) || temperatureInput === "") {
+                alert("Please enter a valid number");
+                return;
+            }
+            
+            const result = convertTemperature(parseFloat(temperatureInput), unitInput);
+            document.getElementById('resultDisplay').innerHTML = `
+                ${result.celsius.toFixed(2)} °C<br>
+                ${result.fahrenheit.toFixed(2)} °F<br>
+                ${result.kelvin.toFixed(2)} K
+            `;
+        });
+    </script>
+</body>
+</html>
